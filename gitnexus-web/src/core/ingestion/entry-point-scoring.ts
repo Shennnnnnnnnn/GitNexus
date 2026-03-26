@@ -150,6 +150,7 @@ const ENTRY_POINT_PATTERNS: Record<string, RegExp[]> = {
     /^perform$/,              // Background jobs (Sidekiq, ActiveJob)
     /^execute$/,              // Command pattern
   ],
+  'objc': [],
 };
 
 // ============================================================================

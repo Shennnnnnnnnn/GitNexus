@@ -44,6 +44,7 @@ const getWasmPath = (language: SupportedLanguages, filePath?: string): string =>
         [SupportedLanguages.Kotlin]: '', // Kotlin WASM parser not yet available for web
         [SupportedLanguages.Swift]: '/wasm/swift/tree-sitter-swift.wasm',
         [SupportedLanguages.Dart]: '/wasm/dart/tree-sitter-dart.wasm',
+        [SupportedLanguages.ObjectiveC]: '/wasm/objc/tree-sitter-objc.wasm',
     };
     
     return languageFileMap[language];

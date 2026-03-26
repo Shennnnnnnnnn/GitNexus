@@ -226,6 +226,7 @@ export const ENTRY_POINT_PATTERNS = {
     /^onEvent$/,          // BLoC event handler
     /^mapEventToState$/,  // Legacy BLoC pattern
   ],
+  [SupportedLanguages.ObjectiveC]: [],
 } satisfies Record<SupportedLanguages, RegExp[]>;
 
 /** Pre-computed merged patterns (universal + language-specific) to avoid per-call array allocation. */

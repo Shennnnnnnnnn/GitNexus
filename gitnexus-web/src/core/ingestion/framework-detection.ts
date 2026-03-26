@@ -401,4 +401,5 @@ export const FRAMEWORK_AST_PATTERNS = {
   'uikit': ['viewDidLoad', 'viewWillAppear', 'viewDidAppear', 'UIViewController'],
   'swiftui': ['@main', 'WindowGroup', 'ContentView', '@StateObject', '@ObservedObject'],
   'combine': ['sink', 'assign', 'Publisher', 'Subscriber'],
+  'objc': [],
 };

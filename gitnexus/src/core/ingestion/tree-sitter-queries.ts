@@ -1117,6 +1117,47 @@ export const DART_QUERIES = `
       (type_identifier) @heritage.trait))) @heritage
 `;
 
+export const OBJECTIVEC_QUERIES = `
+; Classes & Interfaces
+(class_interface . (identifier) @name) @definition.class
+(class_implementation . (identifier) @name) @definition.class
+(protocol_declaration . (identifier) @name) @definition.interface
+
+; Methods
+(method_declaration . (method_type)? . (identifier) @name) @definition.method
+(method_definition . (method_type)? . (identifier) @name) @definition.method
+
+; Functions
+(declaration
+  declarator: (function_declarator
+    declarator: (identifier) @name)) @definition.function
+(function_definition
+  declarator: (function_declarator
+    declarator: (identifier) @name)) @definition.function
+
+; Properties
+(property_declaration (struct_declaration (struct_declarator (pointer_declarator (identifier) @name)))) @definition.property
+(property_declaration (struct_declaration (struct_declarator (identifier) @name))) @definition.property
+
+; Instance Variables (ivar)
+(instance_variable (struct_declaration (struct_declarator (pointer_declarator (identifier) @name)))) @definition.property
+(instance_variable (struct_declaration (struct_declarator (identifier) @name))) @definition.property
+
+; Imports
+(preproc_include path: (_) @import.source) @import
+
+; Calls
+(message_expression
+  method: (identifier) @call.name) @call
+(call_expression
+  function: (identifier) @call.name) @call
+
+; Heritage
+(class_interface
+  (identifier) @heritage.class
+  superclass: (identifier) @heritage.extends) @heritage
+`;
+
 import { SupportedLanguages } from '../../config/supported-languages.js';
 
 export const LANGUAGE_QUERIES: Record<SupportedLanguages, string> = {
@@ -1134,4 +1175,5 @@ export const LANGUAGE_QUERIES: Record<SupportedLanguages, string> = {
   [SupportedLanguages.Ruby]: RUBY_QUERIES,
   [SupportedLanguages.Swift]: SWIFT_QUERIES,
   [SupportedLanguages.Dart]: DART_QUERIES,
+  [SupportedLanguages.ObjectiveC]: OBJECTIVEC_QUERIES,
 };

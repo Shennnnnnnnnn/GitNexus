@@ -42,6 +42,7 @@ export const callRouters = {
   [SupportedLanguages.Ruby]: routeRubyCall,
   [SupportedLanguages.Kotlin]: noRouting,
   [SupportedLanguages.Dart]: noRouting,
+  [SupportedLanguages.ObjectiveC]: noRouting,
 } satisfies Record<SupportedLanguages, CallRouter>;
 
 // ── Result types ────────────────────────────────────────────────────────────

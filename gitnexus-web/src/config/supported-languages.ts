@@ -13,4 +13,5 @@ export enum SupportedLanguages {
     Kotlin = 'kotlin',
     Swift = 'swift',
     Dart = 'dart',
+    ObjectiveC = 'objc',
 }

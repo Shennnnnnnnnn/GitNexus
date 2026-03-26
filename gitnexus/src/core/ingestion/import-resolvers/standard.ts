@@ -134,7 +134,7 @@ export const resolveImportPath = (
   }
 
   // C/C++ includes use actual file paths (e.g. "animal.h") — don't convert dots to slashes
-  const isCpp = language === SupportedLanguages.C || language === SupportedLanguages.CPlusPlus;
+  const isCpp = language === SupportedLanguages.C || language === SupportedLanguages.CPlusPlus || language === SupportedLanguages.ObjectiveC;
   const pathLike = importPath.includes('/') || isCpp
     ? importPath
     : importPath.replace(/\./g, '/');
@@ -187,3 +187,7 @@ export const resolveCImport: ImportResolverFn = (raw, fp, ctx) =>
 /** C++: standard single-file resolution for #include directives. */
 export const resolveCppImport: ImportResolverFn = (raw, fp, ctx) =>
   resolveStandard(raw, fp, ctx, SupportedLanguages.CPlusPlus);
+
+/** Objective-C: standard single-file resolution for #import directives. */
+export const resolveObjcImport: ImportResolverFn = (raw, fp, ctx) =>
+  resolveStandard(raw, fp, ctx, SupportedLanguages.ObjectiveC);
