@@ -122,6 +122,20 @@ claude mcp add gitnexus -- npx -y gitnexus@latest mcp
 claude mcp add gitnexus -- cmd /c npx -y gitnexus@latest mcp
 ```
 
+**Testing Local Build** (for contributors):
+
+If you are modifying GitNexus and want Claude Code to use your unreleased version:
+
+```bash
+# 1. Build the CLI
+cd gitnexus
+npm install
+npm run build
+
+# 2. Add local build to Claude MCP (use absolute path)
+claude mcp add gitnexus-local -- node /absolute/path/to/gitnexus/dist/cli/index.js mcp
+```
+
 **Codex** (full support — MCP + skills):
 
 ```bash
