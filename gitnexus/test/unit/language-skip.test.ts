@@ -12,6 +12,7 @@ describe('isLanguageAvailable', () => {
     expect(isLanguageAvailable(SupportedLanguages.Rust)).toBe(true);
     expect(isLanguageAvailable(SupportedLanguages.PHP)).toBe(true);
     expect(isLanguageAvailable(SupportedLanguages.Ruby)).toBe(true);
+    expect(isLanguageAvailable(SupportedLanguages.ObjectiveC)).toBe(true);
   });
 
   it('returns false for fabricated language values', () => {

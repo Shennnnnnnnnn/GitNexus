@@ -12,6 +12,7 @@ import CPP from 'tree-sitter-cpp';
 import Kotlin from 'tree-sitter-kotlin';
 import PHP from 'tree-sitter-php';
 import Ruby from 'tree-sitter-ruby';
+import ObjectiveC from 'tree-sitter-objc';
 
 const parser = new Parser();
 
@@ -4240,4 +4241,24 @@ function process() {
     });
   });
 
+  describe('Objective-C', () => {
+    it('extracts type from Objective-C method parameters', () => {
+      const tree = parse('- (void)saveUser:(User *)user repo:(Repository *)repo { [user save]; }', ObjectiveC);
+      const typeEnv = buildTypeEnv(tree, 'objc');
+      expect(flatGet(typeEnv, 'user')).toBe('User');
+      expect(flatGet(typeEnv, 'repo')).toBe('Repository');
+    });
+
+    it('infers constructor type from alloc/init message expressions', () => {
+      const tree = parse('void f() { id user = [[User alloc] init]; }', ObjectiveC);
+      const typeEnv = buildTypeEnv(tree, 'objc');
+      expect(flatGet(typeEnv, 'user')).toBe('User');
+    });
+
+    it('propagates Objective-C copy bindings from inferred constructor types', () => {
+      const tree = parse('void f() { id user = [[User alloc] init]; id copy = user; }', ObjectiveC);
+      const typeEnv = buildTypeEnv(tree, 'objc');
+      expect(flatGet(typeEnv, 'copy')).toBe('User');
+    });
+  });
 });

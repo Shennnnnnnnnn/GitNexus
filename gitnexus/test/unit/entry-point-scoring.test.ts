@@ -103,6 +103,16 @@ describe('calculateEntryPointScore', () => {
       expect(result.reasons).toContain('entry-pattern');
     });
 
+    it('recognizes Objective-C UIKit lifecycle', () => {
+      const result = calculateEntryPointScore('viewDidLoad', 'objc', false, 0, 2);
+      expect(result.reasons).toContain('entry-pattern');
+    });
+
+    it('recognizes Objective-C app delegate selector head', () => {
+      const result = calculateEntryPointScore('application', 'objc', false, 0, 2);
+      expect(result.reasons).toContain('entry-pattern');
+    });
+
     it('recognizes PHP Laravel patterns', () => {
       // __invoke starts with '_' which matches utility pattern first
       const result = calculateEntryPointScore('handle', 'php', false, 0, 2);

@@ -331,6 +331,7 @@ export const TYPED_PARAMETER_TYPES = new Set([
   'optional_parameter',      // TS: (x?: Foo)
   'formal_parameter',        // Java/Kotlin
   'parameter',               // C#/Rust/Go/Python/Swift
+  'method_parameter',        // Objective-C: -(void)save:(User *)user
   'typed_parameter',         // Python: def f(x: Foo) — distinct from 'parameter' in tree-sitter-python
   'parameter_declaration',   // C/C++ void f(Type name)
   'simple_parameter',        // PHP function(Foo $x)

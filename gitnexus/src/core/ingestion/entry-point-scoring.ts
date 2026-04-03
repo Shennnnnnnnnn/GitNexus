@@ -226,7 +226,20 @@ export const ENTRY_POINT_PATTERNS = {
     /^onEvent$/,          // BLoC event handler
     /^mapEventToState$/,  // Legacy BLoC pattern
   ],
-  [SupportedLanguages.ObjectiveC]: [],
+  [SupportedLanguages.ObjectiveC]: [
+    /^main$/,
+    /^application$/,
+    /^scene$/,
+    /^viewDidLoad$/,
+    /^viewWillAppear$/,
+    /^viewDidAppear$/,
+    /^viewWillDisappear$/,
+    /^viewDidDisappear$/,
+    /^didFinishLaunchingWithOptions$/,
+    /^sceneDidBecomeActive$/,
+    /^sceneWillEnterForeground$/,
+    /^sceneDidEnterBackground$/,
+  ],
 } satisfies Record<SupportedLanguages, RegExp[]>;
 
 /** Pre-computed merged patterns (universal + language-specific) to avoid per-call array allocation. */

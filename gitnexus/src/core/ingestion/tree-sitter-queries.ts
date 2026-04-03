@@ -1126,6 +1126,8 @@ export const OBJECTIVEC_QUERIES = `
 ; Methods
 (method_declaration . (method_type)? . (identifier) @name) @definition.method
 (method_definition . (method_type)? . (identifier) @name) @definition.method
+(method_declaration (keyword_declarator (identifier) @name)) @definition.method
+(method_definition (keyword_declarator (identifier) @name)) @definition.method
 
 ; Functions
 (declaration

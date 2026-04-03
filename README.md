@@ -386,7 +386,9 @@ GitNexus builds a complete knowledge graph of your codebase through a multi-phas
 | Rust | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
 | PHP | ✓ | ✓ | ✓ | — | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Ruby | ✓ | — | ✓ | ✓ | — | ✓ | — | ✓ | ✓ |
+| Objective-C | ✓ | — | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
 | Swift | — | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Dart | ✓ | — | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
 | C | — | — | ✓ | — | ✓ | ✓ | — | ✓ | ✓ |
 | C++ | — | — | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
 

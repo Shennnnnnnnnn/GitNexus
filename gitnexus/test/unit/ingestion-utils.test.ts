@@ -95,6 +95,15 @@ describe('getLanguageFromFilename', () => {
     });
   });
 
+  describe('Objective-C', () => {
+    it.each(['.m', '.mm'])(
+      'detects %s files',
+      (ext) => {
+        expect(getLanguageFromFilename(`file${ext}`)).toBe(SupportedLanguages.ObjectiveC);
+      }
+    );
+  });
+
   describe('Ruby', () => {
     it.each(['.rb', '.rake', '.gemspec'])(
       'detects %s files',

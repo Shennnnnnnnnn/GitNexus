@@ -405,6 +405,42 @@ describe('Tree-sitter multi-language parsing', () => {
     });
   });
 
+  describe('Objective-C', () => {
+    it('parses interfaces, methods, and C functions', async () => {
+      await loadLanguage(SupportedLanguages.ObjectiveC, 'simple.m');
+      const content = readFixture('simple.m');
+      const provider = getProvider(SupportedLanguages.ObjectiveC);
+      const { matches } = parseAndQuery(parser, content, provider.treeSitterQueries);
+      const defs = extractDefinitions(matches);
+
+      expect(defs.length).toBeGreaterThan(0);
+      const defTypes = defs.map(d => d.type);
+      expect(defTypes).toContain('definition.class');
+      expect(defTypes).toContain('definition.method');
+      expect(defTypes).toContain('definition.function');
+
+      const names = defs.map(d => d.name);
+      expect(names).toContain('MyViewController');
+      expect(names).toContain('loadData');
+      expect(names).toContain('helperFunction');
+    });
+
+    it('captures selector-style methods with parameters', async () => {
+      await loadLanguage(SupportedLanguages.ObjectiveC, 'AppDelegate.m');
+      const code = `
+@implementation AppDelegate
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  return YES;
+}
+@end`;
+      const provider = getProvider(SupportedLanguages.ObjectiveC);
+      const { matches } = parseAndQuery(parser, code, provider.treeSitterQueries);
+      const defs = extractDefinitions(matches);
+      const names = defs.map(d => d.name);
+      expect(names).toContain('application');
+    });
+  });
+
   describe('unhappy path', () => {
     it('returns null/undefined for unsupported file extensions', () => {
       expect(getLanguageFromFilename('archive.xyz')).toBeNull();
@@ -640,6 +676,7 @@ describe('Tree-sitter multi-language parsing', () => {
         [SupportedLanguages.CSharp, 'simple.cs'],
         [SupportedLanguages.Rust, 'simple.rs'],
         [SupportedLanguages.PHP, 'simple.php'],
+        [SupportedLanguages.ObjectiveC, 'simple.m'],
         // Dart and Swift are excluded — they are optionalDependencies that may not be installed
       ];
 

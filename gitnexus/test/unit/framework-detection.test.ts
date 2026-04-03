@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { detectFrameworkFromPath, detectFrameworkFromAST, FRAMEWORK_AST_PATTERNS } from '../../src/core/ingestion/framework-detection.js';
+import { SupportedLanguages } from '../../src/config/supported-languages.js';
 
 describe('detectFrameworkFromPath', () => {
   describe('Next.js', () => {
@@ -260,6 +261,26 @@ describe('detectFrameworkFromPath', () => {
       const result = detectFrameworkFromPath('views/ContentView.swift');
       expect(result).not.toBeNull();
       expect(result!.framework).toBe('swiftui');
+    });
+  });
+
+  describe('Objective-C / iOS', () => {
+    it('detects Objective-C AppDelegate files', () => {
+      const result = detectFrameworkFromPath('App/AppDelegate.m');
+      expect(result).not.toBeNull();
+      expect(result!.framework).toBe('ios');
+    });
+
+    it('detects Objective-C ViewController files', () => {
+      const result = detectFrameworkFromPath('ViewControllers/LoginViewController.m');
+      expect(result).not.toBeNull();
+      expect(result!.framework).toBe('uikit');
+    });
+
+    it('detects Objective-C UIKit lifecycle from AST text', () => {
+      const result = detectFrameworkFromAST(SupportedLanguages.ObjectiveC, '- (void)viewDidLoad { [super viewDidLoad]; }');
+      expect(result).not.toBeNull();
+      expect(result!.framework).toBe('uikit');
     });
   });
 

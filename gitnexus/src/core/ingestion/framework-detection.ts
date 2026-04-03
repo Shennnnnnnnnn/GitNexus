@@ -370,10 +370,13 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
     return { framework: 'ruby', entryPointMultiplier: 1.5, reason: 'ruby-rake' };
   }
   
-  // ========== SWIFT / iOS ==========
+  // ========== SWIFT / OBJECTIVE-C / iOS ==========
 
   // iOS App entry points (highest priority)
-  if (p.endsWith('/appdelegate.swift') || p.endsWith('/scenedelegate.swift') || p.endsWith('/app.swift')) {
+  if (p.endsWith('/appdelegate.swift') || p.endsWith('/scenedelegate.swift') || p.endsWith('/app.swift')
+    || p.endsWith('/appdelegate.m') || p.endsWith('/appdelegate.mm')
+    || p.endsWith('/scenedelegate.m') || p.endsWith('/scenedelegate.mm')
+    || p.endsWith('/main.m') || p.endsWith('/main.mm')) {
     return { framework: 'ios', entryPointMultiplier: 3.0, reason: 'ios-app-entry' };
   }
 
@@ -383,22 +386,25 @@ export function detectFrameworkFromPath(filePath: string): FrameworkHint | null 
   }
 
   // UIKit ViewControllers (high priority - screen entry points)
-  if ((p.includes('/viewcontrollers/') || p.includes('/controllers/') || p.includes('/screens/')) && p.endsWith('.swift')) {
+  if ((p.includes('/viewcontrollers/') || p.includes('/controllers/') || p.includes('/screens/'))
+    && (p.endsWith('.swift') || p.endsWith('.m') || p.endsWith('.mm'))) {
     return { framework: 'uikit', entryPointMultiplier: 2.5, reason: 'uikit-viewcontroller' };
   }
 
   // ViewController by filename convention
-  if (p.endsWith('viewcontroller.swift') || p.endsWith('vc.swift')) {
+  if (p.endsWith('viewcontroller.swift') || p.endsWith('vc.swift')
+    || p.endsWith('viewcontroller.m') || p.endsWith('viewcontroller.mm')
+    || p.endsWith('vc.m') || p.endsWith('vc.mm')) {
     return { framework: 'uikit', entryPointMultiplier: 2.5, reason: 'uikit-viewcontroller-file' };
   }
 
   // Coordinator pattern (navigation entry points)
-  if (p.includes('/coordinators/') && p.endsWith('.swift')) {
+  if (p.includes('/coordinators/') && (p.endsWith('.swift') || p.endsWith('.m') || p.endsWith('.mm'))) {
     return { framework: 'ios-coordinator', entryPointMultiplier: 2.5, reason: 'ios-coordinator' };
   }
 
   // Coordinator by filename
-  if (p.endsWith('coordinator.swift')) {
+  if (p.endsWith('coordinator.swift') || p.endsWith('coordinator.m') || p.endsWith('coordinator.mm')) {
     return { framework: 'ios-coordinator', entryPointMultiplier: 2.5, reason: 'ios-coordinator-file' };
   }
 
@@ -517,7 +523,7 @@ export const FRAMEWORK_AST_PATTERNS = {
   'qt': ['Q_OBJECT', 'Q_INVOKABLE', 'Q_PROPERTY', 'Q_SIGNALS', 'Q_SLOTS', 'Q_SIGNAL', 'Q_SLOT', 'QWidget', 'QApplication'],
 
   // Swift/iOS
-  'uikit': ['viewDidLoad', 'viewWillAppear', 'viewDidAppear', 'UIViewController', '@IBOutlet', '@IBAction', '@objc'],
+  'uikit': ['viewDidLoad', 'viewWillAppear', 'viewDidAppear', 'UIViewController', 'UIApplicationMain', 'AppDelegate', 'SceneDelegate', '@IBOutlet', '@IBAction', '@objc'],
   'swiftui': ['@main', 'WindowGroup', 'ContentView', '@StateObject', '@ObservedObject', '@EnvironmentObject', '@Published'],
   'vapor': ['app.get', 'app.post', 'req.content.decode', 'Vapor'],
 
@@ -601,7 +607,9 @@ export const AST_FRAMEWORK_PATTERNS_BY_LANGUAGE = {
     { framework: 'flutter', entryPointMultiplier: 2.5, reason: 'flutter-widget', patterns: FRAMEWORK_AST_PATTERNS.flutter },
     { framework: 'riverpod', entryPointMultiplier: 2.8, reason: 'riverpod-pattern', patterns: FRAMEWORK_AST_PATTERNS.riverpod },
   ],
-  [SupportedLanguages.ObjectiveC]: [],
+  [SupportedLanguages.ObjectiveC]: [
+    { framework: 'uikit', entryPointMultiplier: 2.8, reason: 'objc-uikit-pattern', patterns: FRAMEWORK_AST_PATTERNS.uikit },
+  ],
 } satisfies Record<SupportedLanguages, AstFrameworkPatternConfig[]>;
 
 /** Pre-lowercased patterns for O(1) pattern matching at runtime */
